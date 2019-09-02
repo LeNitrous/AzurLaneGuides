@@ -11,7 +11,7 @@ $(document).ready(async function() {
     
     try {
         data = await $.ajax({
-            url: `/guides/${ship}.json`,
+            url: `guides/${ship}.json`,
             dataType: 'json'
         });
     }
