@@ -1,0 +1,417 @@
+html, body {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin: 0;
+    background-color: #141414;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+}
+
+p, h1, h2, h3, h4, span {
+    text-align: left;
+    margin: 0;
+}
+
+.content {
+    box-sizing: border-box;
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.fullheight div {
+    height: 100%;
+}
+
+.autoheight {
+    height: auto !important;
+}
+
+div.centered {
+    height: auto;
+    margin: auto;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.section {
+    padding-top: 3rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    color: white;
+}
+
+.character.portrait {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.resume {
+    background: white;
+}
+
+.resume div.header {
+    background: rgb(30, 64, 120);
+    color: white;
+    width: 100%;
+    margin: 1em 0;
+    height: 2.5rem;
+}
+
+.resume div.header.editor {
+    margin-bottom: 1.75em;
+}
+
+.resume div.header.editor .editor-load {
+    display: none;
+}
+
+.resume div.header .row {
+    height: 100%;
+    padding: 0 1rem;
+}
+
+.resume div.header .character {
+    height: 100%;
+    width: 116px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.resume div.header .nation {
+    height: 100%;
+    width: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 0 0.5em;
+    filter: brightness(0%) invert(100%);
+}
+
+.resume div.header .type {
+    width: 21px;
+    height: 18px;
+    margin: auto 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 0 0.5em;
+}
+
+.resume div.header .name,
+.resume div.header .rarity {
+    height: auto;
+    margin: auto;
+}
+
+.resume div.header .rarity {
+    text-align: right;
+    font-size: 10px;
+}
+
+.resume div.header.editor .name {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.resume div.header.editor .name:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.resume div.header.editor label.retrofit {
+    color: black;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.resume div.header.editor .character {
+    display: block;
+}
+
+.resume div.details {
+    padding: 1rem;
+    padding-top: 0;
+}
+
+.resume .body {
+    position: relative;
+    max-height: 89%;
+    overflow: auto;
+}
+
+.resume .body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.resume .body::-webkit-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.resume .body::-webkit-scrollbar-thumb {
+    background: rgb(175, 175, 175);
+    border-radius: 10px;
+}
+
+.resume .details select.header {
+    background: transparent;
+    font-size: 18px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol; 
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+    margin-bottom: 0.5em;
+}
+
+.resume .details select.header:focus {
+    outline: none;
+}
+
+.resume .details h1 {
+    font-size: 18px;
+    font-weight: normal;
+    padding-left: 4px;
+    border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+    margin: 1em 0 0.5em 0;
+}
+
+.equipment {
+    width: 95%;
+    height: 40px !important;
+    border: rgba(0, 0, 0, 0.2) solid 1px;
+    margin: 0.5em auto;
+}
+
+.equipment .icon {
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 128px;
+}
+
+.equipment .name {
+    margin-left: 1em;
+}
+
+.equipment .type {
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+}
+
+.resume .details .skill {
+    width: 95%;
+    height: 60px;
+    border: rgba(0, 0, 0, 0.2) solid 1px;
+    margin: 0.5em auto;
+    padding: 0.5em;
+}
+
+.resume .details .skill[data-skill-type="Offense"] {
+    background-color: rgb(255, 110, 110);
+}
+
+.resume .details .skill[data-skill-type="Defense"] {
+    background-color: rgb(60, 160, 255);
+}
+
+.resume .details .skill[data-skill-type="Support"] {
+    background-color: rgb(255, 220, 60);
+}
+
+.resume .details .skill[data-skill-type="???"] {
+    background-color: rgb(224, 224, 224);
+}
+
+.resume .details .skill .name {
+    font-weight: 620;
+}
+
+.resume .details .skill .desc {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    margin-left: 1rem;
+}
+
+.resume a {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.resume a:hover {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.resume a:active {
+    color: rgba(0, 0, 0, 1);
+}
+
+.editor-equipment-type {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.editor-equipment-select {
+    cursor: pointer;
+}
+
+.ship-selectable {
+    width: 128px;
+    height: 171px;
+    margin: 0.5em;
+}
+
+.equipment-selectable {
+    width: 45%;
+    margin: 0.5em;
+    cursor: pointer;
+}
+
+.equipment-selectable .name {
+    font-size: 11px;
+}
+
+.equipment-selectable .icon {
+    width: 64px;
+    height: 40px;
+}
+
+.description-editor {
+    resize: none;
+    width: 100%;
+    height: 300px;
+    font-size: 14px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+}
+
+.description-preview {
+    font-size: 14px;
+    width: 100%;
+    min-height: 300px;
+    padding: 2px;
+    border: 1px solid rgb(255, 255, 255);
+    margin-bottom: 22px;
+    display: none;
+}
+
+.description-preview * {
+    text-align: left;
+}
+
+.description-editor,
+.description-preview {
+    margin-top: 0.5em;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: none;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0 1em;
+    border: 1px solid #888;
+    width: 40%;
+    height: 100%
+}
+
+.modal-content .body {
+    max-height: 90%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    justify-content: space-between;
+}
+
+.modal-content .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+.modal-content .close:hover,
+.modal-content .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.equipment-header {
+    width: 100%;
+    box-shadow: none;
+    text-align: left;
+    font-size: 16px;
+    background-color: transparent !important;
+}
+
+input.equipment-header {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+select.equipment-header {
+    background-color: transparent !important;
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+    border: none;
+    border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+}
+
+select.equipment-header.editor {
+    margin-top: 0.5em;
+}
+
+.start-info {
+    height: 89%;
+}
+
+.start-info p {
+    position: relative;
+    text-align: center;
+    top: 45%;
+    transform: translateY(-50%);
+}
+
+@media only screen and (max-width:48em) {
+    .content {
+        margin: 0;
+    }
+}
+
+@media only screen and (min-width:30em) {
+    .row {
+        margin: 0;
+    }
+
+    .col-xs {
+        padding: 0;
+    }
+    
+    .modal-content {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width:62em) {
+    .resume div.header .character {
+        display: none;
+    }
+
+    .modal-content {
+        width: 40%;
+    }
+}

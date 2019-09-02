@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css" integrity="sha256-piqEf7Ap7CMps8krDQsSOTZgF+MU/0MPyPW2enj5I40=" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="styles/flexboxgrid.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/github-markdown.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+        <script src="scripts/jquery.js"></script>
+        <script src="scripts/showdown.js"></script>
+        <script src="scripts/FileSaver.js"></script>
+        <script src="scripts/wiki.js"></script>
+        <script src="scripts/new.js"></script>
+    </head>
+    <body>
+        <div class="content fullheight">
+            <div class="container">
+                <div class="row center-xs">
+                    <div class="col-xs col-sm-9 col-md-6">
+                        <div class="resume">
+                            <div class="row autoheight">
+                                <div class="col-xs">
+                                    <div class="header editor">
+                                        <div class="row middle-xs">
+                                            <div class="character" style="display:none;"></div>
+                                            <div class="nation"></div>
+                                            <div class="type"></div>
+                                            <div class="col-xs autoheight">
+                                                <div class="name"></div>
+                                            </div>
+                                            <div class="col-xs-2 autoheight">
+                                                <div class="rarity"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row start-xs">
+                                            <div class="col-xs">
+                                                <div class="retrofit" style="display:none;">
+                                                    <label class="retrofit">
+                                                        <input class="retrofit" type="checkbox">
+                                                        <span>Retrofit</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs">
+                                                <div class="row end-xs">
+                                                    <div class="col-xs-1">
+                                                        <a id="state-save" href="javascript:void(0)">
+                                                            <i class="fas fa-save"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <a id="state-load" href="javascript:void(0)">
+                                                            <i class="fas fa-upload"></i>
+                                                        </a>
+                                                        <input type="file" accept=".json" class="editor-load">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="body" style="display:none;">
+                                <div class="row autoheight">
+                                    <div class="col-xs">
+                                        <div class="details">
+                                            <h1>Loadouts</h1>
+                                            <div class="row middle-xs end-xs">
+                                                <div class="col-xs-2">
+                                                    <label>Name: </label>
+                                                </div>
+                                                <div class="col-xs">
+                                                    <input type="text" class="equipment-header">
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <a id="loadout-add" href="javascript:void(0)" title="Add Loadout">
+                                                        <i class="fas fa-plus-square"></i>
+                                                    </a>
+                                                    <a id="loadout-remove" href="javascript:void(0)" title="Remove Selected Loadout">
+                                                        <i class="fas fa-minus-square"></i>
+                                                    </a>
+                                                    <a id="loadout-rename" href="javascript:void(0)" title="Rename Selected Loadout">
+                                                        <i class="fas fa-pen-square"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs">
+                                                    <select class="equipment-header editor"></select>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <p class="editor-equipment-type" data-slot-idx="0">???</p>
+                                            </div>
+                                            <div class="equipment editor-equipment-select" data-slot-idx="0" data-slot-type="???">
+                                                <div class="row middle-xs">
+                                                    <div class="icon"></div>
+                                                    <div class="col-xs autoheight">
+                                                        <p class="name"></p>
+                                                    </div>
+                                                    <div class="col-xs-3 autoheight">
+                                                        <p class="type"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <p class="editor-equipment-type" data-slot-idx="1">???</p>
+                                            </div>
+                                            <div class="equipment editor-equipment-select" data-slot-idx="1" data-slot-type="???">
+                                                <div class="row middle-xs">
+                                                    <div class="icon"></div>
+                                                    <div class="col-xs autoheight">
+                                                        <p class="name"></p>
+                                                    </div>
+                                                    <div class="col-xs-3 autoheight">
+                                                        <p class="type"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <p class="editor-equipment-type" data-slot-idx="2">???</p>
+                                            </div>
+                                            <div class="equipment editor-equipment-select" data-slot-idx="2" data-slot-type="???">
+                                                <div class="row middle-xs">
+                                                    <div class="icon"></div>
+                                                    <div class="col-xs autoheight">
+                                                        <p class="name"></p>
+                                                    </div>
+                                                    <div class="col-xs-3 autoheight">
+                                                        <p class="type"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <p class="editor-equipment-type" data-slot-idx="3">Auxiliary</p>
+                                            </div>
+                                            <div class="equipment editor-equipment-select" data-slot-idx="3" data-slot-type="Auxiliary">
+                                                <div class="row middle-xs">
+                                                    <div class="icon"></div>
+                                                    <div class="col-xs autoheight">
+                                                        <p class="name"></p>
+                                                    </div>
+                                                    <div class="col-xs-3 autoheight">
+                                                        <p class="type"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row end-xs">
+                                                <p class="editor-equipment-type" data-slot-idx="4">Auxiliary</p>
+                                            </div>
+                                            <div class="equipment editor-equipment-select" data-slot-idx="4" data-slot-type="Auxiliary">
+                                                <div class="row middle-xs">
+                                                    <div class="icon"></div>
+                                                    <div class="col-xs autoheight">
+                                                        <p class="name"></p>
+                                                    </div>
+                                                    <div class="col-xs-3 autoheight">
+                                                        <p class="type"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row middle-xs">
+                                                <div class="col-xs">
+                                                    <h1>Description</h1>
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    <div class="row end-xs">
+                                                        <div class="col-xs">
+                                                            <a id="preview-toggle" href="javascript:void(0)">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <textarea class="description-editor"></textarea>
+                                            <div class="description-preview markdown-body"></div>
+                                            <h1>Skills</h1>
+                                            <div class="skill" data-slot-idx="0" data-skill-type="???">
+                                                <div class="row">
+                                                    <div class="col-xs">
+                                                        <p class="name"></p>
+                                                        <p class="desc"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="skill" data-slot-idx="1" data-skill-type="???">
+                                                <div class="row">
+                                                    <div class="col-xs">
+                                                        <p class="name"></p>
+                                                        <p class="desc"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="skill" data-slot-idx="2" data-skill-type="???">
+                                                <div class="row">
+                                                    <div class="col-xs">
+                                                        <p class="name"></p>
+                                                        <p class="desc"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="start-info">
+                                <p>...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal">
+            <div class="modal-content">
+                <div class="row middle-xs">
+                    <div class="col-xs">
+                        <h4>Selection</h4>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="close">&times;</span>
+                    </div>
+                </div>
+                <div class="body"></div>
+            </div>
+        </div>
+    </body>
+</html>
