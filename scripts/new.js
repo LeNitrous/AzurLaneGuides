@@ -83,17 +83,22 @@ class Editor extends EventTarget {
         this.dispatchEvent(new CustomEvent('onChangeEquipment', { detail: { slot: options.slot, equipment: equipment } }));
     }
 
-    serialize = () =>
-        ({ ship: this.ship, loadouts: this.loadouts })
+    serialize() {
+        return { ship: this.ship, loadouts: this.loadouts };
+    }
 
-    getLoadout = (name) =>
-        this.loadouts.find(loadout => loadout.name == name);
+    getLoadout(name) {
+        return this.loadouts.find(loadout => loadout.name == name);
+    }
+        
 
-    getLoadoutIndex = (name) =>
+    getLoadoutIndex(name) {
         this.loadouts.map(loadout => loadout.name).indexOf(name);
+    }
 
-    getEquipment = (type, id) =>
+    getEquipment(type, id) {
         this.loaded.equipment[type][id];
+    }
 }
 /* #endregion */
 
