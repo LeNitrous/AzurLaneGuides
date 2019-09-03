@@ -93,11 +93,11 @@ class Editor extends EventTarget {
         
 
     getLoadoutIndex(name) {
-        this.loadouts.map(loadout => loadout.name).indexOf(name);
+        return this.loadouts.map(loadout => loadout.name).indexOf(name);
     }
 
     getEquipment(type, id) {
-        this.loaded.equipment[type][id];
+        return this.loaded.equipment[type][id];
     }
 }
 /* #endregion */
