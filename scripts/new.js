@@ -150,7 +150,11 @@ $(document).ready(async function () {
         $('.resume .details .skill').each(function (i) {
             const skill = ship.skills[i];
 
-            if (!skill) return;
+            if (!skill) {
+                $(this).empty();
+                $(this).attr('data-skill-type', '???');
+                return;
+            }
 
             $(this).find('.name').text(skill.name);
             $(this).find('.desc').text(skill.description);
