@@ -125,11 +125,12 @@ $(document).ready(async function () {
     });
 
     EDITOR.addEventListener('onTogglePreview', function (event) {
-        $(".description-editor")[(event.detail.state) ? "hide" : "show"]();
-        $(".description-preview")
+        $(".text-editor")[(event.detail.state) ? "hide" : "show"]();
+        $(".text-preview")
             [(!event.detail.state) ? "hide" : "show"]()
-            .empty()
-            .append(converter.makeHtml($(".description-editor").val()));
+            .empty();
+        $(".description.text-preview").append(converter.makeHtml($(".description.text-editor").val()));
+        $(".barrage.text-preview").append(converter.makeHtml($(".barrage.text-editor").val()));
     });
 
     EDITOR.addEventListener('onChangeShip', function (event) {
@@ -260,7 +261,8 @@ $(document).ready(async function () {
         if (!EDITOR.ship) return;
         
         var output = EDITOR.serialize();
-        output.description = $(".description-editor").val();
+        output.description = $(".description.text-editor").val();
+        output.barrage = $(".description.text-editor").val();
         output.retrofitted = $("input.retrofit").is(":checked");
 
         var blob = new Blob([ JSON.stringify(output) ], {type: "application/json;charset=utf-8"});

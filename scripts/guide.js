@@ -11,7 +11,8 @@ $(document).ready(async function() {
     
     try {
         data = await $.ajax({
-            url: `/AzurLaneGuides/guides/${ship}.json`,
+            url: (location.hostname === "localhost" || location.hostname === "127.0.0.1") ? 
+                `/guides/${ship}.json` : `/AzurLaneGuides/guides/${ship}.json`,
             dataType: 'json'
         });
     }
@@ -27,6 +28,7 @@ $(document).ready(async function() {
     $('.resume .header .rarity').text(data.ship.rarity)
 
     $('.resume .details .description').append(converter.makeHtml(data.description));
+    $('.resume .details .barrage').append(converter.makeHtml(data.barrage));
 
     data.loadouts.forEach((preset, index) => $('.resume .details select').append(`<option value="${index}">${preset.name}</option>`));
 

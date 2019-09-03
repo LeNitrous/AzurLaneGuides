@@ -37,10 +37,10 @@ div.centered {
 }
 
 .section {
-    padding-top: 3rem;
+    padding: 2rem 1rem;
     margin-bottom: 0.5rem;
     text-align: left;
-    color: white;
+    background-color: white;
 }
 
 .character.portrait {
@@ -279,7 +279,7 @@ div.centered {
     height: 40px;
 }
 
-.description-editor {
+.text-editor {
     resize: none;
     width: 100%;
     height: 300px;
@@ -287,7 +287,7 @@ div.centered {
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
 }
 
-.description-preview {
+.text-preview {
     font-size: 14px;
     width: 100%;
     min-height: 300px;
@@ -297,12 +297,12 @@ div.centered {
     display: none;
 }
 
-.description-preview * {
+.text-preview * {
     text-align: left;
 }
 
-.description-editor,
-.description-preview {
+.text-editor,
+.text-preview {
     margin-top: 0.5em;
 }
 
