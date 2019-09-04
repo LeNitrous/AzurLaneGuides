@@ -223,6 +223,7 @@ $(document).ready(async function () {
 
     EDITOR.addEventListener('onRemoveLoadout', function (event) {
         const name = event.detail.loadout.name;
+        $(`.loadout-tab[data-loadout=${name}]`).remove();
         $(`select.equipment-header option[value="${name}"]`).remove()
         $('select.equipment-header')
             .val(EDITOR.loadouts[0].name)
