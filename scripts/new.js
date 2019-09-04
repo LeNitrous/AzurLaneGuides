@@ -49,7 +49,7 @@ class Editor extends EventTarget {
     }
 
     addLoadout(name) {
-        var loadout = { name: name, equipment: {} }
+        var loadout = { name: name, equipment: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} } }
         this.loadouts.push(loadout);
         this.dispatchEvent(new CustomEvent('onAddLoadout', { detail: { loadout: loadout, index: this.getLoadoutIndex(name) } }));
     }
@@ -74,12 +74,17 @@ class Editor extends EventTarget {
     }
 
     setEquipment(options) {
-        var equipment = this.getEquipment(options.equipment.type, options.equipment.id);
+        var equipment;
+        
+        if (options.equipment.type && options.equipment.id)
+            equipment = this.getEquipment(options.equipment.type, options.equipment.id);
+        else if (options.equipment.name)
+            equipment = options.equipment;
         
         if (!equipment)
-            return this.dispatchEvent(new CustomEvent('onError', { detail: { tried: `to set non-existent ${options.equipment.type} equipment with id #${options.equipment.id} ` } }));
+            return this.dispatchEvent(new CustomEvent('onError', { detail: { tried: `to set non-existent equipment` } }));
 
-        this.getLoadout(options.loadout).equipment[options.slot] = equipment;
+        this.getLoadout(options.loadout).equipment[options.slot.index][options.slot.position] = equipment;
         this.dispatchEvent(new CustomEvent('onChangeEquipment', { detail: { slot: options.slot, equipment: equipment } }));
     }
 
@@ -89,11 +94,14 @@ class Editor extends EventTarget {
 
     getLoadout(name) {
         return this.loadouts.find(loadout => loadout.name == name);
-    }
-        
+    } 
 
     getLoadoutIndex(name) {
         return this.loadouts.map(loadout => loadout.name).indexOf(name);
+    }
+
+    getLoadoutSlot(name, slot) {
+        return this.getLoadout(name).equipment[slot];
     }
 
     getEquipment(type, id) {
@@ -151,8 +159,9 @@ $(document).ready(async function () {
             const skill = ship.skills[i];
 
             if (!skill) {
-                $(this).empty();
-                $(this).attr('data-skill-type', '???');
+                $(this)
+                    .attr('data-skill-type', '???')
+                    .empty();
                 return;
             }
 
@@ -167,19 +176,6 @@ $(document).ready(async function () {
 
         EDITOR.addLoadout("Default");
 
-        // Update the slot types
-        for (var slot = 0; slot < 5; slot++) {
-            var type = ship.equips[slot];
-            if (type) {
-                $(`.editor-equipment-type[data-slot-idx=${slot}]`).text(type.join(' / '));
-                $(`.equipment[data-slot-idx=${slot}]`).data('slot-type', type.join(';'));
-            }
-            else if (slot > 2 && (ship.type == "Destroyer" || ship.type == "Light Cruiser"))
-                $(`.equipment[data-slot-idx=${slot}]`).attr('data-slot-type', 'Auxiliary;Anti-Submarine');
-            else
-                $(`.equipment[data-slot-idx=${slot}]`).attr('data-slot-type', 'Auxiliary');
-        }
-
         // Equipment list loads as needed
         [...new Set(ship.equips.flat())]
             .forEach((type, idx) => {
@@ -192,10 +188,11 @@ $(document).ready(async function () {
     });
 
     EDITOR.addEventListener('onChangeEquipment', function (event) {
+        const current = $('select.equipment-header').val();
         const equip = event.detail.equipment;
-        $(`.equipment[data-slot-idx=${event.detail.slot}]`).find('.icon').css('background-image', `url(${equip.icon})`);
-        $(`.equipment[data-slot-idx=${event.detail.slot}]`).find('.name').text(equip.name);
-        $(`.equipment[data-slot-idx=${event.detail.slot}]`).find('.type').text(equip.type);
+        $(`.loadout-tab[data-loadout=${current}] .equipment[data-slot-idx=${event.detail.slot.index}][data-slot-pos=${event.detail.slot.position}]`).find('.icon').css('background-image', `url(${equip.icon})`);
+        $(`.loadout-tab[data-loadout=${current}] .equipment[data-slot-idx=${event.detail.slot.index}][data-slot-pos=${event.detail.slot.position}]`).find('.name').text(equip.name);
+        $(`.loadout-tab[data-loadout=${current}] .equipment[data-slot-idx=${event.detail.slot.index}][data-slot-pos=${event.detail.slot.position}]`).find('.type').text(equip.type);
     });
 
     EDITOR.addEventListener('onAddLoadout', function (event) {
@@ -205,6 +202,23 @@ $(document).ready(async function () {
             .append(new Option(name, name))
             .val(name)
             .trigger('change');
+
+        $('.loadout-container').append(`<div class="loadout-tab" data-loadout="${name}"></div>`);
+
+        for (var slot = 0; slot < 5; slot++) {
+            var type = (slot > 2) ? 'Auxiliary' : EDITOR.ship.equips[slot];
+            $(`.loadout-tab[data-loadout="${name}"]`).append(`
+                <div class="row middle-xs end-xs">
+                    <p class="editor-equipment-type" data-slot-idx="${slot}">${type}</p>
+                    <div class="col-xs-1">
+                        <a class="slot-add" data-slot-idx="${slot}" href="javascript:void(0)" title="Add Slot">
+                            <i class="fas fa-plus-square"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="loadout-slot-container" data-slot-idx="${slot}" data-slot-type="${type}"></div>
+            `);
+        }
     });
 
     EDITOR.addEventListener('onRemoveLoadout', function (event) {
@@ -235,13 +249,16 @@ $(document).ready(async function () {
 
     /* #region UI */
     $('select.equipment-header').on('change', function () {
-        for (var slot = 0; slot < 5; slot++) {
-            var equip = EDITOR.getLoadout($(this).val()).equipment[slot];
+        var loadout = EDITOR.getLoadout($(this).val());
+
+        $('.loadout-tab').each(function () {
+            var name = $(this).attr('data-loadout');
             
-            $(`.equipment[data-slot-idx=${slot}]`).find('.icon').css('background-image', `url(${(equip) ? equip.icon : ""})`);
-            $(`.equipment[data-slot-idx=${slot}]`).find('.name').text((equip) ? equip.name : "");
-            $(`.equipment[data-slot-idx=${slot}]`).find('.type').text((equip) ? equip.type : "");
-        }
+            if (name != loadout.name)
+                $(this).hide();
+            else
+                $(this).show();
+        });
     });
 
     $('#preview-toggle').on('click', function () {
@@ -261,7 +278,7 @@ $(document).ready(async function () {
         EDITOR.renameLoadout($('select.equipment-header').val(), $('input.equipment-header').val().trim());
     });
 
-    $('#state-save').on('click', function() {
+    $('#state-save').on('click', function () {
         if (!EDITOR.ship) return;
         
         var output = EDITOR.serialize();
@@ -277,7 +294,34 @@ $(document).ready(async function () {
 
     });
 
-    $('.editor-equipment-select').click(function () {
+    $('.loadout-container').on('click', '.slot-add', function () {
+        var current = $('select.equipment-header').val();
+        var slot = $(this).attr('data-slot-idx');
+        var container = $(`.loadout-tab[data-loadout=${current}] .loadout-slot-container[data-slot-idx=${slot}]`);
+
+        EDITOR.getLoadout(current).equipment[slot][container.children().length] = null;
+
+        $(`.loadout-tab[data-loadout=${current}] .loadout-slot-container[data-slot-idx=${slot}]`).append(`
+            <div class="row middle-xs">
+                <div class="equipment editor-equipment-select" data-slot-idx="${container.attr('data-slot-idx')}" data-slot-pos="${container.children().length}" data-slot-type="${container.attr('data-slot-type')}">
+                    <div class="row middle-xs">
+                        <div class="icon"></div>
+                        <div class="col-xs autoheight">
+                            <p class="name"></p>
+                        </div>
+                        <div class="col-xs-3 autoheight">
+                            <p class="type"></p>
+                        </div>
+                    </div>
+                </div>
+                <a class="slot-remove" href="javascript:void(0)" title="Remove Selected Loadout">
+                    <i class="fas fa-minus-square"></i>
+                </a>
+            </div>
+        `);
+    });
+
+    $('.loadout-container').on('click', '.editor-equipment-select', function () {
         var type = $(this).data('slot-type').split(';');
 
         if (type[0] == "???" || !$('select.equipment-header').val()) return;
@@ -285,7 +329,7 @@ $(document).ready(async function () {
         type.forEach(t => {
             EDITOR.loaded.equipment[t].forEach((item, idx) => {
                 $('.modal .modal-content .body').append(`
-                    <div class="equipment equipment-selectable" data-slot-type="${t}" data-slot-idx="${$(this).data('slot-idx')}" data-idx="${idx}">
+                    <div class="equipment equipment-selectable" data-slot-type="${t}" data-slot-idx="${$(this).data('slot-idx')}" data-slot-pos="${$(this).data('slot-pos')}" data-idx="${idx}">
                         <div class="row fullheight middle-xs">
                             <div class="icon" style="background-image:url('${item.icon}')"></div>
                             <div class="col-xs autoheight">
@@ -299,14 +343,35 @@ $(document).ready(async function () {
         $('.modal').show();
     });
 
+    $('.loadout-container').on('click', '.slot-remove', function () {
+        var loadout = $('select.equipment-header').val();
+        var main = $(this).siblings('.editor-equipment-select');
+        var slot = main.attr('data-slot-idx');
+        var pos = main.attr('data-slot-pos');
+
+        var array = Object.values(EDITOR.getLoadout(loadout).equipment[slot]);
+        array.splice(pos, 1);
+        EDITOR.getLoadout(loadout).equipment[slot] = Object.assign({}, array);
+        main.parent().remove();
+
+        $(`.editor-equipment-select[data-slot-idx="${slot}"]`).each(function (i) {
+            $(this).attr('data-slot-pos', i);
+        });
+    });
+
     $('.modal .modal-content .body').on('click', '.equipment-selectable', function () {
-        var type = $(this).data('slot-type');
-        var slot = $(this).data('slot-idx');
+        var type = $(this).attr('data-slot-type');
+        var slot = $(this).attr('data-slot-idx');
+        var pos = $(this).attr('data-slot-pos');
         var idx = parseInt($(this).data('idx'));
+        var loadout = $('select.equipment-header').val();
 
         EDITOR.setEquipment({
-            loadout: $('select.equipment-header').val(),
-            slot: slot,
+            loadout: loadout,
+            slot: {
+                index: slot,
+                position: pos
+            },
             equipment: {
                 type: type,
                 id: idx
