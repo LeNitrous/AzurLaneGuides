@@ -225,9 +225,11 @@ $(document).ready(async function () {
         const name = event.detail.loadout.name;
         $(`.loadout-tab[data-loadout=${name}]`).remove();
         $(`select.equipment-header option[value="${name}"]`).remove()
-        $('select.equipment-header')
-            .val(EDITOR.loadouts[0].name)
-            .trigger('change');
+
+        if (EDITOR.loadouts[0])
+            $('select.equipment-header')
+                .val(EDITOR.loadouts[0].name)
+                .trigger('change');
     });
 
     EDITOR.addEventListener('onRenameLoadout', function (event) {
